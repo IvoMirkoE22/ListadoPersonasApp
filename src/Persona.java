@@ -34,6 +34,10 @@ public class Persona {
     public String getEmail() {
         return email;
     }
+    // Setters
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
+    public void setEmail(String email) { this.email = email; }
 
     // toString
     @Override
