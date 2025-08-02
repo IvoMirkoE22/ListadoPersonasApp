@@ -87,97 +87,136 @@ public class MenuPersonas {
              usando referencia
              personas.forEach(System.out::println);
              */
-            for (Persona persona : personas) {
-                System.out.println(persona);
+            for (int i = 0; i < personas.size(); i++) {
+                Persona p = personas.get(i);
+                String resultado = p.toString();
+                System.out.println(i + "_" + resultado);
             }
         }
     }
 
-    private void editarPersonas(){
-        listarPersonas();
-        if(personas.isEmpty()){
-            return;//No hay personas para editar
-        }
-
-        System.out.println("Ingrese el numero de la persona que desea editar ");
-        System.out.println("Ingrese un número del 0 al "+ (personas.size()-1));
-        int indice = Integer.parseInt(consola.nextLine());
-
-
-        if (indice>= 0 && indice < personas.size()){
-            Persona persona = personas.get(indice);
-
-            System.out.println("Persona seleccionada: " + persona);
-            System.out.println("Ingrese el nuevo nombre (deje vacio para cancelar): ");
-            String nuevoNombre = consola.nextLine();
-            
-            if(!nuevoNombre.isEmpty()) {
-                persona.setNombre(nuevoNombre);
-                System.out.println("Nombre editado correctamente");
-                String nNombre = persona.getNombre();
-                System.out.println(nNombre);
-            }else{
-                System.out.println("No se realizo ningun cambio");
-            }
-
-            System.out.println("Ingrese el nuevo telefono (deje vacio para cancelar): ");
-            String nuevoTelefono = consola.nextLine();
-
-            if(!nuevoTelefono.isEmpty()){
-                persona.setTelefono(nuevoTelefono);
-                System.out.println("Telefono editado correctamente");
-                String nTelefono = persona.getTelefono();
-                System.out.println(nTelefono);
-            }else{
-                System.out.println("No se realizo ningun cambio");
-            }
-
-            System.out.println("Ingese el nuevo email");
-            String nuevoEmail = consola.nextLine();
-
-            if(!nuevoEmail.isEmpty()){
-                persona.setEmail(nuevoEmail);
-                System.out.println("Email editado correctamente");
-                String nEmail = persona.getEmail();
-                System.out.println(nEmail);
-            }else{
-                System.out.println("No se realizo ningun cambio");
-            }
-        }else{
-            System.out.println("Indice inválido");
-        }
-
-
-    }
-
-    private void eliminarPersona(){
-        listarPersonas();
-        if(personas.isEmpty()){
-            System.out.println("No hay personas para eliminar");
+    private void editarPersonas() {
+        if (personas.isEmpty()) {
+            System.out.println("No hay personas para editar.");
             return;
         }
 
-        System.out.println("Ingrese el indice de la persona que desea eliminar: ");
-        System.out.println("El indice debe ser un número del 0 al " + (personas.size()-1));
-        int indiceE = Integer.parseInt(consola.nextLine());
+        listarPersonas();
+        System.out.println("Ingrese el número de la persona que desea editar (o -1 para cancelar):");
+        System.out.println("Debe ingresar un numero del 0 al "+ personas.size());
 
-        if(indiceE >= 0 && indiceE < personas.size()){
-            Persona person = personas.get(indiceE);
-            System.out.println("Estas seguro que desea elimiar a: "+ person.getNombre()+ "? (s/n)");
-            String respuesta = consola.nextLine();
 
-            if(respuesta.equalsIgnoreCase("s")){
-                personas.remove(indiceE);
-                System.out.println("Persona eliminada exitosamente");
-            }else if(respuesta.equalsIgnoreCase("n")){
-                System.out.println("Operacion cancelada");
-            }else{
-                System.out.println("Comando inválido");
+        int indice;
+        try {
+            indice = Integer.parseInt(consola.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Debe ingresar un número válido.");
+            return;
+        }
+
+        if (indice == -1) {
+            System.out.println("Edición cancelada.");
+            return;
+        }
+
+        if (indice >= 0 && indice < personas.size()) {
+            Persona persona = personas.get(indice);
+
+            System.out.println("Seleccionado: " + persona);
+
+            // Editar nombre
+            System.out.print("Nuevo nombre (dejar vacío para no cambiar): ");
+            String nuevoNombre = consola.nextLine();
+            if (!nuevoNombre.isEmpty()) {
+                System.out.print("¿Seguro que desea cambiar el nombre de '" + persona.getNombre() + "' a '" + nuevoNombre + "'? (s/n): ");
+                String confirmacion = consola.nextLine();
+                if (confirmacion.equalsIgnoreCase("s")) {
+                    persona.setNombre(nuevoNombre);
+                    System.out.println("Nombre editado correctamente.");
+                } else if (confirmacion.equalsIgnoreCase("n")) {
+                    System.out.println("Cambio de nombre cancelado.");
+                } else {
+                    System.out.println("Opción inválida. No se modificó el nombre.");
+                }
             }
-        }else{
-            System.out.println("Indice inválido");
+
+            // Editar teléfono
+            System.out.print("Nuevo teléfono (dejar vacío para no cambiar): ");
+            String nuevoTelefono = consola.nextLine();
+            if (!nuevoTelefono.isEmpty()) {
+                System.out.print("¿Seguro que desea cambiar el teléfono de '" + persona.getTelefono() + "' a '" + nuevoTelefono + "'? (s/n): ");
+                String confirmacion = consola.nextLine();
+                if (confirmacion.equalsIgnoreCase("s")) {
+                    persona.setTelefono(nuevoTelefono);
+                    System.out.println("Teléfono editado correctamente.");
+                } else if (confirmacion.equalsIgnoreCase("n")) {
+                    System.out.println("Cambio de teléfono cancelado.");
+                } else {
+                    System.out.println("Opción inválida. No se modificó el teléfono.");
+                }
+            }
+
+            // Editar email
+            System.out.print("Nuevo email (dejar vacío para no cambiar): ");
+            String nuevoEmail = consola.nextLine();
+            if (!nuevoEmail.isEmpty()) {
+                System.out.print("¿Seguro que desea cambiar el email de '" + persona.getEmail() + "' a '" + nuevoEmail + "'? (s/n): ");
+                String confirmacion = consola.nextLine();
+                if (confirmacion.equalsIgnoreCase("s")) {
+                    persona.setEmail(nuevoEmail);
+                    System.out.println("Email editado correctamente.");
+                } else if (confirmacion.equalsIgnoreCase("n")) {
+                    System.out.println("Cambio de email cancelado.");
+                } else {
+                    System.out.println("Opción inválida. No se modificó el email.");
+                }
+            }
+
+        } else {
+            System.out.println("Índice inválido.");
         }
     }
+
+    private void eliminarPersona() {
+        if (personas.isEmpty()) {
+            System.out.println("No hay personas para eliminar.");
+            return;
+        }
+
+        listarPersonas();
+        System.out.println("Ingrese el número de la persona que desea eliminar (o -1 para cancelar):");
+
+
+        int indice;
+        try {
+            indice = Integer.parseInt(consola.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Debe ingresar un número válido.");
+            return;
+        }
+
+        if (indice == -1) {
+            System.out.println("Eliminación cancelada.");
+            return;
+        }
+
+        if (indice >= 0 && indice < personas.size()) {
+            Persona persona = personas.get(indice);
+            System.out.print("¿Está seguro que desea eliminar a " + persona.getNombre() + "? (s/n): ");
+            String confirmacion = consola.nextLine();
+            if (confirmacion.equalsIgnoreCase("s")) {
+                personas.remove(indice);
+                System.out.println("Persona eliminada correctamente.");
+            } else if (confirmacion.equalsIgnoreCase("n")) {
+                System.out.println("Eliminación cancelada.");
+            } else {
+                System.out.println("Opción inválida. No se realizó ninguna acción.");
+            }
+        } else {
+            System.out.println("Índice inválido.");
+        }
+    }
+
 
     public void buscadorNombres(){
         if(personas.isEmpty()){
