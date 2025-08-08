@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class MenuPersonas {
@@ -32,7 +33,10 @@ public class MenuPersonas {
                         3. Editar
                         4. Eliminar Persona
                         5. Buscar Personas
-                        6. Salir
+                        6. Ordenar Alfabéticamente
+                        7. Guardar Archivo
+                        8. Cargar Archivo
+                        9. Salir
                         Proporciona la opción:\s""");
     }
 
@@ -45,7 +49,18 @@ public class MenuPersonas {
             case 3 -> editarPersonas();
             case 4 -> eliminarPersona();
             case 5 -> buscadorNombres();
-            case 6 -> {
+            case 6 -> ordenarAlfabeticamente();
+            case 7 -> {
+                System.out.println("Ingrese el nombre del archivo que desea guardar");
+                String nombreArchivo = consola.nextLine().trim();
+                GestorArchivos.guardarArchivo(personas,nombreArchivo);
+            }
+            case 8 -> {
+                System.out.println("Ingrese el nombre del archivo que desea abrir");
+                String nombreArchivoAbrir = consola.nextLine().trim();
+                GestorArchivos.cargarPersonas(nombreArchivoAbrir);
+            }
+            case 9 -> {
                 System.out.println("Estas seguro de que deseas salir ? (s/n)");
                 String respuesta = consola.nextLine();
                 if(respuesta.equalsIgnoreCase("s")) {
@@ -243,5 +258,34 @@ public class MenuPersonas {
             System.out.println("No se encontraron coincidencias");
         }
     }
+
+    public void ordenarAlfabeticamente() {
+        if (personas.isEmpty()) {
+            System.out.println("No hay personas cargadas para ordenar.");
+            return;
+        }
+
+        System.out.println("¿Desea ordenar la lista alfabéticamente? (s/n)");
+        String respuesta = consola.nextLine().toLowerCase();
+
+        if (respuesta.equals("s")) {
+            // Copiamos la lista original
+            ArrayList<Persona> nombreOrdenado = new ArrayList<>(personas);
+
+            // Ordenamos por nombre (ignorando mayúsculas/minúsculas)
+            nombreOrdenado.sort(Comparator.comparing(p -> p.getNombre().toLowerCase()));
+
+            System.out.println("Listado de personas ordenadas alfabéticamente:");
+            for (int i = 0; i < nombreOrdenado.size(); i++) {
+                Persona p = nombreOrdenado.get(i);
+                System.out.println(p.toString());
+            }
+        } else if(respuesta.equals("n")) {
+            System.out.println("Operación cancelada.");
+        } else{
+            System.out.println("Opción inválida");
+        }
+    }
+
 
 }
