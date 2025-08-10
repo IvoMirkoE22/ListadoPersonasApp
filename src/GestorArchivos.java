@@ -1,51 +1,66 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GestorArchivos {
 
     public static void guardarArchivo(ArrayList<Persona> personas, String nombreArchivo) {
-        try (PrintWriter writer = new PrintWriter(nombreArchivo)) {
-            for (Persona p : personas) {
-                writer.println(p.toString());
-            }
-            System.out.println("Personas guardadas en: " + nombreArchivo);
+        if (personas.isEmpty()) {
+            System.out.println("No hay personas para guardar.");
+            return;
+        }
 
+        File archivo = new File(nombreArchivo);
+
+        // Si existe, pedir confirmación
+        if (archivo.exists()) {
+            Scanner confirmacion = new Scanner(System.in);
+            System.out.println("El archivo ya existe. ¿Desea sobreescribirlo? (s/n)");
+            String respuesta = confirmacion.nextLine().trim().toLowerCase();
+            if (!respuesta.equals("s")) {
+                System.out.println("Operación cancelada. No se guardaron los datos.");
+                return;
+            }
+        }
+        // try-catch: asegura cerrar el escritor automáticamente
+        try (FileWriter escritor = new FileWriter(nombreArchivo)) {
+            for (Persona p : personas) {
+                escritor.write(p.getNombre() + "," + p.getTelefono() + "," + p.getEmail() + "\n");
+            }
+            System.out.println("Lista guardada correctamente en: " + nombreArchivo);
         } catch (IOException e) {
-            System.out.println("Error al guardar en archivo: " + e.getMessage());
+            System.out.println("Error al guardar: " + e.getMessage());
         }
     }
 
-    public static ArrayList<Persona> cargarPersonas(String nombreDeArchivo) {
+    public static ArrayList<Persona> cargarPersonas(String nombreArchivo) {
         ArrayList<Persona> personas = new ArrayList<>();
 
-        File archivo = new File(nombreDeArchivo);
-        if (!archivo.exists()) {
-            return personas; // Devuelve lista vacía si el archivo no existe
-        }
-
-        try (Scanner lector = new Scanner(archivo)) {
-            while (lector.hasNextLine()) {//significa ¿hay otra línea para leer en el archivo?"
-                String linea = lector.nextLine(); //si hay mas líneas por leer entonces las lee con nextLine.
-                String[] partes = linea.split(",");//separa el texto en partes cada vez que encuentra una coma.
-                if (partes.length == 3) {
-                    String nombre = partes[0].trim();
-                    String telefono = partes[1].trim();
-                    String email = partes[2].trim();
-                    personas.add(new Persona(nombre, telefono, email));
+        try (BufferedReader lector = new BufferedReader(new FileReader(nombreArchivo))) {
+            String linea;
+            while ((linea = lector.readLine()) != null) {
+                linea = linea.trim();
+                if (!linea.isEmpty()) {
+                    String[] partes = linea.split(",");
+                    if (partes.length == 3) {
+                        String nombre = partes[0].trim();
+                        String telefono = partes[1].trim();
+                        String email = partes[2].trim();
+                        personas.add(new Persona(nombre, telefono, email));
+                    }
                 }
             }
-            System.out.println("Personas cargadas con éxito desde " + nombreDeArchivo);
+            System.out.println("Personas cargadas con éxito desde: " + nombreArchivo);
+        } catch (FileNotFoundException e) {
+            System.out.println("No se encontró el archivo: " + nombreArchivo);
         } catch (IOException e) {
             System.out.println("Error al leer el archivo: " + e.getMessage());
         }
 
         return personas;
     }
-
 }
+
 
 
 

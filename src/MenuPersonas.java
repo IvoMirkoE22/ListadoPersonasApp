@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class MenuPersonas {
     private final Scanner consola;
-    private final ArrayList<Persona> personas;
+    private  ArrayList<Persona> personas;
 
 
     public MenuPersonas() {
@@ -58,7 +58,7 @@ public class MenuPersonas {
             case 8 -> {
                 System.out.println("Ingrese el nombre del archivo que desea abrir");
                 String nombreArchivoAbrir = consola.nextLine().trim();
-                GestorArchivos.cargarPersonas(nombreArchivoAbrir);
+                personas = GestorArchivos.cargarPersonas(nombreArchivoAbrir);
             }
             case 9 -> {
                 System.out.println("Estas seguro de que deseas salir ? (s/n)");
