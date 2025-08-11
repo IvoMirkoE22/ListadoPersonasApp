@@ -3,7 +3,7 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 public class MenuPersonas {
-    private final Scanner consola;
+    private  final  Scanner consola;
     private  ArrayList<Persona> personas;
 
 
@@ -36,7 +36,8 @@ public class MenuPersonas {
                         6. Ordenar Alfabéticamente
                         7. Guardar Archivo
                         8. Cargar Archivo
-                        9. Salir
+                        9. Eliminar Archivo
+                        10. Salir
                         Proporciona la opción:\s""");
     }
 
@@ -61,8 +62,13 @@ public class MenuPersonas {
                 personas = GestorArchivos.cargarPersonas(nombreArchivoAbrir);
             }
             case 9 -> {
+                System.out.println("Ingrese el nombre del archivo que desea eliminar");
+                String nombreArchivoE = consola.nextLine().trim();
+                GestorArchivos.eliminarArchivo(nombreArchivoE);
+            }
+            case 10 -> {
                 System.out.println("Estas seguro de que deseas salir ? (s/n)");
-                String respuesta = consola.nextLine();
+                String respuesta = consola.nextLine().trim();
                 if(respuesta.equalsIgnoreCase("s")) {
                     System.out.println("Saliendo del programa...");
                     return true;
@@ -79,11 +85,11 @@ public class MenuPersonas {
 
     private void agregarPersona() {
         System.out.print("Proporciona el nombre: ");
-        String nombre = consola.nextLine();
+        String nombre = consola.nextLine().trim();
         System.out.print("Proporciona el teléfono: ");
-        String telefono = consola.nextLine();
+        String telefono = consola.nextLine().trim();
         System.out.print("Proporciona el email: ");
-        String email = consola.nextLine();
+        String email = consola.nextLine().trim();
 
         Persona persona = new Persona(nombre, telefono, email);
         personas.add(persona);
@@ -144,7 +150,7 @@ public class MenuPersonas {
             String nuevoNombre = consola.nextLine();
             if (!nuevoNombre.isEmpty()) {
                 System.out.print("¿Seguro que desea cambiar el nombre de '" + persona.getNombre() + "' a '" + nuevoNombre + "'? (s/n): ");
-                String confirmacion = consola.nextLine();
+                String confirmacion = consola.nextLine().trim();
                 if (confirmacion.equalsIgnoreCase("s")) {
                     persona.setNombre(nuevoNombre);
                     System.out.println("Nombre editado correctamente.");
@@ -160,7 +166,7 @@ public class MenuPersonas {
             String nuevoTelefono = consola.nextLine();
             if (!nuevoTelefono.isEmpty()) {
                 System.out.print("¿Seguro que desea cambiar el teléfono de '" + persona.getTelefono() + "' a '" + nuevoTelefono + "'? (s/n): ");
-                String confirmacion = consola.nextLine();
+                String confirmacion = consola.nextLine().trim();
                 if (confirmacion.equalsIgnoreCase("s")) {
                     persona.setTelefono(nuevoTelefono);
                     System.out.println("Teléfono editado correctamente.");
@@ -176,7 +182,7 @@ public class MenuPersonas {
             String nuevoEmail = consola.nextLine();
             if (!nuevoEmail.isEmpty()) {
                 System.out.print("¿Seguro que desea cambiar el email de '" + persona.getEmail() + "' a '" + nuevoEmail + "'? (s/n): ");
-                String confirmacion = consola.nextLine();
+                String confirmacion = consola.nextLine().trim();
                 if (confirmacion.equalsIgnoreCase("s")) {
                     persona.setEmail(nuevoEmail);
                     System.out.println("Email editado correctamente.");
@@ -218,7 +224,7 @@ public class MenuPersonas {
         if (indice >= 0 && indice < personas.size()) {
             Persona persona = personas.get(indice);
             System.out.print("¿Está seguro que desea eliminar a " + persona.getNombre() + "? (s/n): ");
-            String confirmacion = consola.nextLine();
+            String confirmacion = consola.nextLine().trim();
             if (confirmacion.equalsIgnoreCase("s")) {
                 personas.remove(indice);
                 System.out.println("Persona eliminada correctamente.");
@@ -239,7 +245,7 @@ public class MenuPersonas {
             return;
         }
         System.out.print("Ingresa el nombre de la persona:");
-        String nombreB = consola.nextLine().toLowerCase();
+        String nombreB = consola.nextLine().trim().toLowerCase();
 
         boolean encontrado = false;
 
@@ -266,7 +272,7 @@ public class MenuPersonas {
         }
 
         System.out.println("¿Desea ordenar la lista alfabéticamente? (s/n)");
-        String respuesta = consola.nextLine().toLowerCase();
+        String respuesta = consola.nextLine().trim().toLowerCase();
 
         if (respuesta.equals("s")) {
             // Copiamos la lista original

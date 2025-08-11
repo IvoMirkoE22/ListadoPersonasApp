@@ -59,6 +59,25 @@ public class GestorArchivos {
 
         return personas;
     }
+
+    public static void eliminarArchivo(String nombreArchivo){
+        Scanner confirmacionE = new Scanner(System.in);
+        System.out.print("¿Está seguro que desea eliminar el archivo " + nombreArchivo + "? (s/n): ");
+        String respuesta = confirmacionE.nextLine().trim().toLowerCase();
+        if (!respuesta.equals("s")) {
+            System.out.println("Operación cancelada.");
+            return;
+        }
+            File archivo = new File(nombreArchivo);
+            if (!archivo.exists()) {
+                System.out.println("El archivo que desea eliminar no existe");
+            }
+                if (archivo.delete()) {
+                    System.out.println("Archivo eliminado correctamente");
+                } else {
+                    System.out.println("No se puede eliminar el archivo. Verifique si el archivo está en uso o si tiene permisos.");
+                }
+    }
 }
 
 
